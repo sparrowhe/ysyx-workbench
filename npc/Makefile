@@ -1,5 +1,5 @@
-TOPNAME = light
-NXDC_FILES = constr/top.nxdc
+TOPNAME = mux41_2bit
+NXDC_FILES = constr/${TOPNAME}.nxdc
 INC_PATH ?=
 
 VERILATOR = verilator
@@ -21,7 +21,7 @@ $(SRC_AUTO_BIND): $(NXDC_FILES)
 
 # project source
 VSRCS = $(shell find $(abspath ./vsrc) -name "$(TOPNAME).v")
-CSRCS = $(shell find $(abspath ./csrc) -name "$(TOPNAME)_*.c" -or -name "$(TOPNAME)_*.cc" -or -name "$(TOPNAME)_*.cpp")
+CSRCS = $(shell find $(abspath ./csrc) -name "$(TOPNAME)*.c" -or -name "$(TOPNAME)*.cc" -or -name "$(TOPNAME)*.cpp")
 CSRCS += $(SRC_AUTO_BIND)
 
 # rules for NVBoard
@@ -53,19 +53,19 @@ clean:
 # all:
 # 	@echo "Write this Makefile by your self."
 
-# .PHONY: sim
+.PHONY: sim
 
-# sim: $(addprefix sim_, $(filter-out sim, $(MAKECMDGOALS)))
+sim: $(addprefix sim_, $(filter-out sim, $(MAKECMDGOALS)))
 
-# sim_%:
+sim_%:
+	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
+	@echo "[SIM] Building: $*"
+	verilator --cc --exe --build -j 0 --trace -Wall csrc/$*_main.cpp vsrc/$*.v --Mdir $(OBJ_DIR)
+	@echo "[SIM] Running: $*"
+	./build/obj_dir/V$*
+
+# sim:
 # 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
-# 	@echo "[SIM] Building: $*"
-# 	verilator --cc --exe --build -j 0 --trace -Wall csrc/$*_main.cpp vsrc/$*.v
-# 	@echo "[SIM] Running: $*"
-# 	./obj_dir/V$*
-
-# # sim:
-# # 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
-# # 	@echo "Write this Makefile by your self."
+# 	@echo "Write this Makefile by your self."
 
 include ../Makefile
