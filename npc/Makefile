@@ -60,9 +60,9 @@ sim: $(addprefix sim_, $(filter-out sim, $(MAKECMDGOALS)))
 sim_%:
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	@echo "[SIM] Building: $*"
-	verilator --cc --exe --build -j 0 --trace -Wall csrc/$*_main.cpp vsrc/$*.v --Mdir $(OBJ_DIR)
+	verilator --cc --exe --build -j 0 --trace -Wall csrc/$**.cpp vsrc/$*.v
 	@echo "[SIM] Running: $*"
-	./build/obj_dir/V$*
+	./obj_dir/V$*
 
 # sim:
 # 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
