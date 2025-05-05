@@ -1,9 +1,9 @@
-TOPNAME = mux41_2bit
+TOPNAME = seglight
 NXDC_FILES = constr/${TOPNAME}.nxdc
 INC_PATH ?=
 
 VERILATOR = verilator
-VERILATOR_CFLAGS += -MMD --build -cc  \
+VERILATOR_CFLAGS += -MMD --build -cc --trace  \
 				-O3 --x-assign fast --x-initial fast --noassert
 
 BUILD_DIR = ./build
